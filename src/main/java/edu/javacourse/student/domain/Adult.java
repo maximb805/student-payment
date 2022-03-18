@@ -10,12 +10,11 @@ public class Adult extends Person
     private String passportSerial;
     private String passportNumber;
     private LocalDate passportIssueDate;
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private University university;
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private PassportOffice passportIssueDepartment;
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private RegisterOffice marriageCertificateIssueDepartment;
+    private String studentNumber;
 
     public String getPassportSerial() {
         return passportSerial;
@@ -39,5 +38,29 @@ public class Adult extends Person
 
     public void setPassportIssueDate(LocalDate passportIssueDate) {
         this.passportIssueDate = passportIssueDate;
+    }
+
+    public University getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(University university) {
+        this.university = university;
+    }
+
+    public PassportOffice getPassportIssueDepartment() {
+        return passportIssueDepartment;
+    }
+
+    public void setPassportIssueDepartment(PassportOffice passportIssueDepartment) {
+        this.passportIssueDepartment = passportIssueDepartment;
+    }
+
+    public String getStudentNumber() {
+        return studentNumber;
+    }
+
+    public void setStudentNumber(String studentNumber) {
+        this.studentNumber = studentNumber;
     }
 }

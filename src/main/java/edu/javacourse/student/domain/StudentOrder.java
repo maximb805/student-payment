@@ -2,19 +2,29 @@ package edu.javacourse.student.domain;
 
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "jc_student_order_tmp")
+@Table(name = "jc_student_order")
 public class StudentOrder
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_order_id")
     private Long studentOrderId;
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "student_order_status_id")
+    private StudentOrderStatus studentOrderStatusId;
+    @Column(name = "student_order_date")
+    private LocalDateTime studentOrderDate;
 
     @Embedded
     @AssociationOverrides({
-            @AssociationOverride(name = "address.street", joinColumns = @JoinColumn(name = "h_street_code"))
+            @AssociationOverride(name = "address.street", joinColumns = @JoinColumn(name = "h_street_code")),
+            @AssociationOverride(name = "passportIssueDepartment", joinColumns = @JoinColumn(name = "h_passport_office_id")),
+            @AssociationOverride(name = "university", joinColumns = @JoinColumn(name = "h_university_id"))
     })
     @AttributeOverrides({
             @AttributeOverride(name = "surName", column = @Column(name = "h_sur_name")),
@@ -27,12 +37,16 @@ public class StudentOrder
             @AttributeOverride(name = "address.apartment", column = @Column(name = "h_apartment")),
             @AttributeOverride(name = "passportSerial", column = @Column(name = "h_passport_serial")),
             @AttributeOverride(name = "passportNumber", column = @Column(name = "h_passport_number")),
-            @AttributeOverride(name = "passportIssueDate", column = @Column(name = "h_passport_date"))
+            @AttributeOverride(name = "passportIssueDate", column = @Column(name = "h_passport_date")),
+            @AttributeOverride(name = "studentNumber", column = @Column(name = "h_student_number"))
+
     })
     private Adult husband;
     @Embedded
     @AssociationOverrides({
-            @AssociationOverride(name = "address.street", joinColumns = @JoinColumn(name = "w_street_code"))
+            @AssociationOverride(name = "address.street", joinColumns = @JoinColumn(name = "w_street_code")),
+            @AssociationOverride(name = "passportIssueDepartment", joinColumns = @JoinColumn(name = "w_passport_office_id")),
+            @AssociationOverride(name = "university", joinColumns = @JoinColumn(name = "w_university_id"))
     })
     @AttributeOverrides({
             @AttributeOverride(name = "surName", column = @Column(name = "w_sur_name")),
@@ -45,9 +59,24 @@ public class StudentOrder
             @AttributeOverride(name = "address.apartment", column = @Column(name = "w_apartment")),
             @AttributeOverride(name = "passportSerial", column = @Column(name = "w_passport_serial")),
             @AttributeOverride(name = "passportNumber", column = @Column(name = "w_passport_number")),
-            @AttributeOverride(name = "passportIssueDate", column = @Column(name = "w_passport_date"))
+            @AttributeOverride(name = "passportIssueDate", column = @Column(name = "w_passport_date")),
+            @AttributeOverride(name = "studentNumber", column = @Column(name = "w_student_number"))
     })
     private Adult wife;
+
+    @Column(name = "marriage_certificate_number")
+    private String marriageCertificateNumber;
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "register_office_id")
+    private RegisterOffice registerOffice;
+    @Column(name = "marriage_date")
+    private LocalDate marriageDate;
+    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY,
+            mappedBy = "studentOrder")
+    private List<StudentOrderChild> studentOrderChild;
+
+    public StudentOrder() {
+    }
 
     public Long getStudentOrderId() {
         return studentOrderId;
@@ -73,5 +102,51 @@ public class StudentOrder
         this.wife = wife;
     }
 
+    public StudentOrderStatus getStudentOrderStatusId() {
+        return studentOrderStatusId;
+    }
 
+    public void setStudentOrderStatusId(StudentOrderStatus studentOrderStatusId) {
+        this.studentOrderStatusId = studentOrderStatusId;
+    }
+
+    public LocalDateTime getStudentOrderDate() {
+        return studentOrderDate;
+    }
+
+    public void setStudentOrderDate(LocalDateTime studentOrderDate) {
+        this.studentOrderDate = studentOrderDate;
+    }
+
+    public RegisterOffice getRegisterOffice() {
+        return registerOffice;
+    }
+
+    public void setRegisterOffice(RegisterOffice registerOffice) {
+        this.registerOffice = registerOffice;
+    }
+
+    public String getMarriageCertificateNumber() {
+        return marriageCertificateNumber;
+    }
+
+    public void setMarriageCertificateNumber(String marriageCertificateNumber) {
+        this.marriageCertificateNumber = marriageCertificateNumber;
+    }
+
+    public LocalDate getMarriageDate() {
+        return marriageDate;
+    }
+
+    public void setMarriageDate(LocalDate marriageDate) {
+        this.marriageDate = marriageDate;
+    }
+
+    public List<StudentOrderChild> getStudentOrderChild() {
+        return studentOrderChild;
+    }
+
+    public void setStudentOrderChild(List<StudentOrderChild> studentOrderChild) {
+        this.studentOrderChild = studentOrderChild;
+    }
 }
