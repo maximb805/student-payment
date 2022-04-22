@@ -67,8 +67,8 @@ public class StudentOrderService {
         LOGGER.info("Паспортный стол жены: " + sos.get(0).getWife().getPassportIssueDepartment().getPassportOfficeName());
         LOGGER.info("ЗАГС: " + sos.get(0).getRegisterOffice().getRegisterOfficeName());
         LOGGER.info("Студенческий номер жены: " + sos.get(0).getWife().getStudentNumber());
-        LOGGER.info("Имя ребенка: " + sos.get(0).getStudentOrderChild().get(0).getStudentChild().getGivenName());
-        LOGGER.info("Сертификат ребенка: " + sos.get(0).getStudentOrderChild().get(0).getStudentChild().getBirthCertificateNumber());
+        LOGGER.info("Имя ребенка: " + sos.get(0).getStudentOrderChild().get(0).getChild().getGivenName());
+        LOGGER.info("Сертификат ребенка: " + sos.get(0).getStudentOrderChild().get(0).getChild().getCertificateNumber());
     }
 
     public Adult buildPerson(boolean wife) {
@@ -135,10 +135,10 @@ public class StudentOrderService {
         a.setStreet(one);
         p.setAddress(a);
         p.setRegisterOffice(registerOfficeRepository.getById(2L));
-        p.setBirthCertificateDate(LocalDate.of(2018, 3, 3));
-        p.setBirthCertificateNumber("birth25412");
+        p.setCertificateDate(LocalDate.of(2018, 3, 3));
+        p.setCertificateNumber("birth25412");
 
-        soc.setStudentChild(p);
+        soc.setChild(p);
         return soc;
     }
 }
